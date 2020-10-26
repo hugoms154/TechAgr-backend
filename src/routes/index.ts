@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import { uuid } from 'uuidv4';
 import Post from '../database/entities/posts/Post';
+import findDeepCommentAndInsertAInnerComment from '../utils/findDeepCommentAndInsertAInnerComment';
 
 const routes = Router();
 
@@ -34,22 +35,6 @@ routes.post('/posts', async (request, response) => {
 
   return response.json(savedPost);
 });
-
-function findDeepCommentAndInsertAInnerComment(
-  commentId: string,
-  comments: Post[],
-  newComment: Post,
-) {
-  comments.forEach(comment => {
-    if (String(comment.id) === commentId) comment.comments.push(newComment);
-    else
-      findDeepCommentAndInsertAInnerComment(
-        commentId,
-        comment.comments,
-        newComment,
-      );
-  });
-}
 
 routes.post('/posts/append/:id', async (request, response) => {
   const { content, comments, fatherId } = request.body;
