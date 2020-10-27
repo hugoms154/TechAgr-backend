@@ -6,9 +6,9 @@ const routes = Router();
 const postController = new PostController();
 const commentController = new CommentController();
 
-routes.get('/posts', postController.show);
+routes.get('/posts', postController.index);
 
-routes.get('/posts/:id', postController.index);
+routes.get('/posts/:id', postController.show);
 
 routes.post('/posts', postController.create);
 
